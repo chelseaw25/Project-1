@@ -1,5 +1,24 @@
 ---
-title: "About"
+title: "Chelsea"
+about:
+  template: jolla
+  image: profile.jpeg
+  image-alt: "Profile image"
+  links:
+    - icon: github
+      text: GitHub
+      href: https://github.com/chelseaw25/Project-1.git
 ---
 
-About this site
+## About Me
+
+Hi, I'm Chelsea! I'm a sophomore at Pomona College majoring in economics and thinking about adding a minor in data science. I live in New Jersey pretty close to Rutgers University!
+
+## Interests
+
+Outside of academics, I love to go thrifting with my friends and listen to music!.
+
+
+## Code
+
+The code for this website is available on [GitHub](https://github.com/chelseaw25/Project-1.git).

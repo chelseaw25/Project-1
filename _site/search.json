@@ -9,8 +9,36 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "Chelsea",
     "section": "",
-    "text": "About this site"
+    "text": "Hi, I’m Chelsea! I’m a sophomore at Pomona College majoring in economics and thinking about adding a minor in data science. I live in New Jersey pretty close to Rutgers University!"
+  },
+  {
+    "objectID": "about.html#about-me",
+    "href": "about.html#about-me",
+    "title": "Chelsea",
+    "section": "",
+    "text": "Hi, I’m Chelsea! I’m a sophomore at Pomona College majoring in economics and thinking about adding a minor in data science. I live in New Jersey pretty close to Rutgers University!"
+  },
+  {
+    "objectID": "about.html#interests",
+    "href": "about.html#interests",
+    "title": "Chelsea",
+    "section": "Interests",
+    "text": "Interests\nOutside of academics, I love to go thrifting with my friends and listen to music!."
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "Chelsea",
+    "section": "Education",
+    "text": "Education\nPomona College, Claremont, CA B.A. in Economics (Data Science minor in progress), expected [YEAR]"
+  },
+  {
+    "objectID": "about.html#code",
+    "href": "about.html#code",
+    "title": "Chelsea",
+    "section": "Code",
+    "text": "Code\nThe code for this website is available on GitHub."
   }
 ]

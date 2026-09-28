@@ -1,5 +1,6 @@
 project:
   type: website
+  output-dir: docs
 
 website:
   title: "Project-1"
@@ -7,7 +8,14 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
+      - text: Data Viz
+        menu:
+          - text: "TidyTuesday 1"
+            href: tidytuesday1.qmd
+          - text: "TidyTuesday 2"
+            href: tidytuesday2.qmd
 
 format:
   html:
