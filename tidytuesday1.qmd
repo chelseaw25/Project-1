@@ -14,7 +14,7 @@ execute:
 
 ## About the data
 
-This dataset comes from the [TidyTuesday project](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-03-18/readme.md) (week of March 18, 2025). It containsinformation on palm tree traits from around the world, like leaf number and stem height. The plot shows how number of leaves varies across palm tribes.
+This dataset comes from the [TidyTuesday project](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-03-18/readme.md) (week of March 18, 2025). It contains information on palm tree traits from around the world, like leaf number and stem height. The plot shows how number of leaves varies across palm tribes.
 
 ## Plot
 

@@ -12,9 +12,9 @@ website:
         text: About
       - text: Data Viz
         menu:
-          - text: "TidyTuesday 1"
+          - text: "Palm Trees"
             href: tidytuesday1.qmd
-          - text: "TidyTuesday 2"
+          - text: "Palmer Penguins"
             href: tidytuesday2.qmd
 
 format:
