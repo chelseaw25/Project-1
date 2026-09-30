@@ -1,3 +1,40 @@
 ---
-title: "tidy tuesday 2"
+title: "Palmer Penguins"
+description: |
+  Analysis of Antarctic penguin measurements 
+author: Chelsea Williams
+date: September 28, 2026
+execute:
+  warning: false
+  message: false
 ---
+
+## About the data
+
+This dataset comes from the [TidyTuesday project](https://github.com/rfordatascience/tidytuesday/blob/main/data/2020/2020-07-28/readme.md) (week of July 28, 2020). It includes body measurements for three species of penguins Adelie, Chinstrap, and Gentoo that live on islands in the Palmer Archipelago, Antarctica. The plot below looks at the relationship between flipper length and body mass.
+
+## Plot
+
+```{r}
+library(tidyverse)
+
+penguins <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2020/2020-07-28/penguins.csv')
+
+penguins |>
+  drop_na(flipper_length_mm, body_mass_g) |>
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point(alpha = 0.7) +
+  labs(
+    title = "Flipper Length vs. Body Mass in Palmer Penguins",
+    x = "Flipper length (mm)",
+    y = "Body mass (g)",
+    color = "Species"
+  ) +
+  theme_minimal()
+```
+
+## Data source
+
+TidyTuesday: [Palmer Penguins, July 28, 2020](https://github.com/rfordatascience/tidytuesday/blob/main/data/2020/2020-07-28/readme.md)
+
+Original source: Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus *Pygoscelis*). *PLoS ONE*, 9(3), e90081. Data accessed via the [palmerpenguins R package](https://allisonhorst.github.io/palmerpenguins/): Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0. doi:10.5281/zenodo.3960218.

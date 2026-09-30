@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Chelsea",
+    "section": "",
+    "text": "Hi, I’m Chelsea! I’m a sophomore at Pomona College majoring in economics and thinking about adding a minor in data science. I live in New Jersey pretty close to Rutgers University!"
+  },
+  {
+    "objectID": "about.html#about-me",
+    "href": "about.html#about-me",
+    "title": "Chelsea",
+    "section": "",
+    "text": "Hi, I’m Chelsea! I’m a sophomore at Pomona College majoring in economics and thinking about adding a minor in data science. I live in New Jersey pretty close to Rutgers University!"
+  },
+  {
+    "objectID": "about.html#interests",
+    "href": "about.html#interests",
+    "title": "Chelsea",
+    "section": "Interests",
+    "text": "Interests\nOutside of academics, I love to go thrifting with my friends and listen to music!."
+  },
+  {
+    "objectID": "about.html#code",
+    "href": "about.html#code",
+    "title": "Chelsea",
+    "section": "Code",
+    "text": "Code\nThe code for this website is available on GitHub."
+  },
+  {
+    "objectID": "tidytuesday1.html",
+    "href": "tidytuesday1.html",
+    "title": "Palm Trees",
+    "section": "",
+    "text": "This dataset comes from the TidyTuesday project (week of March 18, 2025). It contains species-level information on palm traits from around the world, such as leaf number and stem height. Here I look at how the number of leaves varies across palm tribes."
+  },
+  {
+    "objectID": "tidytuesday1.html#about-the-data",
+    "href": "tidytuesday1.html#about-the-data",
+    "title": "Palm Trees",
+    "section": "",
+    "text": "This dataset comes from the TidyTuesday project (week of March 18, 2025). It contains species-level information on palm traits from around the world, such as leaf number and stem height. Here I look at how the number of leaves varies across palm tribes."
+  },
+  {
+    "objectID": "tidytuesday1.html#plot",
+    "href": "tidytuesday1.html#plot",
+    "title": "Palm Trees",
+    "section": "Plot",
+    "text": "Plot\n\n\nCode\nlibrary(tidyverse)\n\npalmtrees &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-18/palmtrees.csv')\n\npalmtrees |&gt;\n  group_by(palm_tribe) |&gt;\n  summarize(avg_leaves = mean(max_leaf_number, na.rm = TRUE)) |&gt;\n  drop_na() |&gt;\n  ggplot(aes(x = avg_leaves, y = fct_reorder(palm_tribe, avg_leaves))) +\n  geom_col(fill = \"darkgreen\") +\n  labs(\n    title = \"Average Maximum Leaf Number by Palm Tribe\",\n    x = \"Average maximum number of leaves\",\n    y = \"Palm tribe\"\n  ) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "tidytuesday1.html#data-source",
+    "href": "tidytuesday1.html#data-source",
+    "title": "Palm Trees",
+    "section": "Data source",
+    "text": "Data source\nTidyTuesday: Palm Trees, March 18, 2025\nOriginal source: Kissling, W. D., Balslev, H., Baker, W. J., Dransfield, J., Göldel, B., Lim, J. Y., Onstein, R. E., & Svenning, J.-C. (2019). PalmTraits 1.0, a species-level functional trait database of palms worldwide. Scientific Data, 6, 178. Accessed via the palmtrees R package."
+  },
+  {
+    "objectID": "tidytuesday2.html",
+    "href": "tidytuesday2.html",
+    "title": "Palmer Penguins",
+    "section": "",
+    "text": "This dataset comes from the TidyTuesday project (week of July 28, 2020). It includes body measurements for three species of penguins Adelie, Chinstrap, and Gentoo that live on islands in the Palmer Archipelago, Antarctica. The plot below looks at the relationship between flipper length and body mass."
+  },
+  {
+    "objectID": "tidytuesday2.html#about-the-data",
+    "href": "tidytuesday2.html#about-the-data",
+    "title": "Palmer Penguins",
+    "section": "",
+    "text": "This dataset comes from the TidyTuesday project (week of July 28, 2020). It includes body measurements for three species of penguins Adelie, Chinstrap, and Gentoo that live on islands in the Palmer Archipelago, Antarctica. The plot below looks at the relationship between flipper length and body mass."
+  },
+  {
+    "objectID": "tidytuesday2.html#plot",
+    "href": "tidytuesday2.html#plot",
+    "title": "Palmer Penguins",
+    "section": "Plot",
+    "text": "Plot\n\nlibrary(tidyverse)\n\npenguins &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2020/2020-07-28/penguins.csv')\n\npenguins |&gt;\n  drop_na(flipper_length_mm, body_mass_g) |&gt;\n  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +\n  geom_point(alpha = 0.7) +\n  labs(\n    title = \"Flipper Length vs. Body Mass in Palmer Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\"\n  ) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "tidytuesday2.html#data-source",
+    "href": "tidytuesday2.html#data-source",
+    "title": "Palmer Penguins",
+    "section": "Data source",
+    "text": "Data source\nTidyTuesday: Palmer Penguins, July 28, 2020\nOriginal source: Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus Pygoscelis). PLoS ONE, 9(3), e90081. Data accessed via the palmerpenguins R package: Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0. doi:10.5281/zenodo.3960218."
+  }
+]

@@ -1,3 +1,44 @@
 ---
-title: "tidy tuesday 1"
+title: "Palm Trees"
+description: |
+  Analysis of palm trees data 
+author: Chelsea Williams
+date: Septemer 28, 2026
+format:
+  html:
+    code-fold: true
+execute:
+  warning: false
+  message: false
 ---
+
+## About the data
+
+This dataset comes from the [TidyTuesday project](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-03-18/readme.md) (week of March 18, 2025). It containsinformation on palm tree traits from around the world, like leaf number and stem height. The plot shows how number of leaves varies across palm tribes.
+
+## Plot
+
+```{r}
+library(tidyverse)
+
+palmtrees <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-18/palmtrees.csv')
+
+palmtrees |>
+  group_by(palm_tribe) |>
+  summarize(avg_leaves = mean(max_leaf_number, na.rm = TRUE)) |>
+  drop_na() |>
+  ggplot(aes(x = avg_leaves, y = fct_reorder(palm_tribe, avg_leaves))) +
+  geom_col(fill = "darkgreen") +
+  labs(
+    title = "Average Maximum Leaf Number by Palm Tribe",
+    x = "Average maximum number of leaves",
+    y = "Palm tribe"
+  ) +
+  theme_minimal()
+```
+
+## Data source
+
+TidyTuesday: [Palm Trees, March 18, 2025](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-03-18/readme.md)
+
+Original source: Kissling, W. D., Balslev, H., Baker, W. J., Dransfield, J., Göldel, B., Lim, J. Y., Onstein, R. E., & Svenning, J.-C. (2019). PalmTraits 1.0, a species-level functional trait database of palms worldwide. *Scientific Data*, 6, 178. Accessed via the [palmtrees R package](https://github.com/EmilHvitfeldt/palmtrees).
