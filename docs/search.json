@@ -32,14 +32,14 @@
     "href": "tidytuesday1.html",
     "title": "Palm Trees",
     "section": "",
-    "text": "This dataset comes from the TidyTuesday project (week of March 18, 2025). It contains species-level information on palm traits from around the world, such as leaf number and stem height. Here I look at how the number of leaves varies across palm tribes."
+    "text": "This dataset comes from the TidyTuesday project (week of March 18, 2025). It containsinformation on palm tree traits from around the world, like leaf number and stem height. The plot shows how number of leaves varies across palm tribes."
   },
   {
     "objectID": "tidytuesday1.html#about-the-data",
     "href": "tidytuesday1.html#about-the-data",
     "title": "Palm Trees",
     "section": "",
-    "text": "This dataset comes from the TidyTuesday project (week of March 18, 2025). It contains species-level information on palm traits from around the world, such as leaf number and stem height. Here I look at how the number of leaves varies across palm tribes."
+    "text": "This dataset comes from the TidyTuesday project (week of March 18, 2025). It containsinformation on palm tree traits from around the world, like leaf number and stem height. The plot shows how number of leaves varies across palm tribes."
   },
   {
     "objectID": "tidytuesday1.html#plot",

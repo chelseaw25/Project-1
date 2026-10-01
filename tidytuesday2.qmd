@@ -4,6 +4,9 @@ description: |
   Analysis of Antarctic penguin measurements 
 author: Chelsea Williams
 date: September 28, 2026
+format:
+  html:
+    code-fold: true
 execute:
   warning: false
   message: false
