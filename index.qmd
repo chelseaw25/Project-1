@@ -1,7 +1,0 @@
----
-title: "Project-1"
----
-
-First Mini Project for Foundations of Data Science in R.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
