@@ -89,5 +89,68 @@
     "title": "Project-1",
     "section": "",
     "text": "First Mini Project for Foundations of Data Science in R.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "textanalysis.html",
+    "href": "textanalysis.html",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "",
+    "text": "Emily Dickinson is known for short poems about big subjects and for her heavy use of the dash (--). In this project I use string functions and regular expressions to ask:\n\nWhich words does she use most?\nHow does her use of dashes compare across the three groups of poem files in the data?"
+  },
+  {
+    "objectID": "textanalysis.html#introduction",
+    "href": "textanalysis.html#introduction",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "",
+    "text": "Emily Dickinson is known for short poems about big subjects and for her heavy use of the dash (--). In this project I use string functions and regular expressions to ask:\n\nWhich words does she use most?\nHow does her use of dashes compare across the three groups of poem files in the data?"
+  },
+  {
+    "objectID": "textanalysis.html#data-source",
+    "href": "textanalysis.html#data-source",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "Data source",
+    "text": "Data source\n\nR package: DickinsonPoems by Nicholas Horton, available at https://github.com/Amherst-Statistics/DickinsonPoems and installed with devtools::install_github(\"Amherst-Statistics/DickinsonPoems\").\nOriginal source: the Project Gutenberg edition of Emily Dickinson’s poems, https://www.gutenberg.org/files/12242/12242-h/12242-h.htm.\nEach poem is stored as its own text file (like gutenberg1.txt001). I call the digit after “gutenberg” the “file group” (1, 2, or 3)."
+  },
+  {
+    "objectID": "textanalysis.html#read-in-the-data",
+    "href": "textanalysis.html#read-in-the-data",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "Read in the data",
+    "text": "Read in the data\n\n\nCode\nlibrary(tidyverse)\nlibrary(DickinsonPoems)\n\npoems_raw &lt;- tibble(file = list_poems()) |&gt;\n  mutate(raw = map_chr(file, \\(f) str_flatten(get_poem(f), collapse = \"\\n\")))"
+  },
+  {
+    "objectID": "textanalysis.html#clean-the-data",
+    "href": "textanalysis.html#clean-the-data",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "Clean the data",
+    "text": "Clean the data\nEach poem starts with a Roman numeral like XIX., then usually an ALL-CAPS title, then the poem itself. I use regular expressions to pull these pieces apart.\n\n(?&lt;=gutenberg)\\\\d is a lookbehind: it grabs the digit that comes right after the word “gutenberg” in the file name.\n[IVXLC]+(?=\\\\.) is a lookahead: it grabs the Roman numeral only if a period follows it.\n[^a-z\\\\n]*[A-Z][^a-z\\\\n]* matches a line with no lowercase letters (the title).\n\n\n\nCode\npoems &lt;- poems_raw |&gt;\n  mutate(\n    raw = str_trim(raw),\n    group = str_extract(file, \"(?&lt;=gutenberg)\\\\d\"),\n    group = str_c(\"File group \", group),\n    roman = str_extract(raw, \"^[IVXLC]+(?=\\\\.)\"),\n    body = str_trim(str_remove(raw, \"^[IVXLC]+\\\\.\")),\n    title = str_extract(body, \"^[^a-z\\\\n]*[A-Z][^a-z\\\\n]*(?=\\\\n)\"),\n    text = str_trim(str_remove(body, \"^[^a-z\\\\n]*[A-Z][^a-z\\\\n]*\\\\n\")),\n    n_dashes = str_count(text, \"--\")\n  ) |&gt;\n  select(file, group, roman, title, text, n_dashes)\n\nhead(poems)\n\n\n# A tibble: 6 × 6\n  file              group        roman title             text           n_dashes\n  &lt;chr&gt;             &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;             &lt;int&gt;\n1 gutenberg1.txt001 File group 1 I     \"SUCCESS. \"       \"[Published i…        0\n2 gutenberg1.txt002 File group 1 II     &lt;NA&gt;             \"Our share of…        1\n3 gutenberg1.txt003 File group 1 III   \"ROUGE ET NOIR. \" \"Soul, wilt t…        0\n4 gutenberg1.txt004 File group 1 IV    \"ROUGE GAGNE. \"   \"'T is so muc…        1\n5 gutenberg1.txt005 File group 1 V      &lt;NA&gt;             \"Glee! The gr…        1\n6 gutenberg1.txt006 File group 1 VI     &lt;NA&gt;             \"If I can sto…        0"
+  },
+  {
+    "objectID": "textanalysis.html#question-1-which-words-does-she-use-most",
+    "href": "textanalysis.html#question-1-which-words-does-she-use-most",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "Question 1: Which words does she use most?",
+    "text": "Question 1: Which words does she use most?\nI pull out every word with the regular expression [a-z']+ (letters and apostrophes), then remove a short list of very common words so that the interesting words stand out.\n\n\nCode\nstop_words_small &lt;- c(\"the\", \"and\", \"that\", \"with\", \"for\", \"was\", \"are\", \"but\",\n                      \"not\", \"you\", \"all\", \"his\", \"her\", \"they\", \"this\", \"have\",\n                      \"from\", \"will\", \"has\", \"had\", \"its\", \"were\", \"who\", \"when\",\n                      \"then\", \"than\", \"there\", \"their\", \"she\", \"him\", \"our\", \"can\",\n                      \"one\", \"would\", \"could\", \"what\", \"which\", \"upon\", \"thy\",\n                      \"thee\", \"thou\", \"been\", \"into\", \"more\", \"does\", \"just\")\n\nall_words &lt;- tibble(\n  word = unlist(str_extract_all(str_to_lower(poems$text), \"[a-z']+\"))\n)\n\ntop_words &lt;- all_words |&gt;\n  filter(str_length(word) &gt; 2, !word %in% stop_words_small) |&gt;\n  count(word, sort = TRUE) |&gt;\n  slice_head(n = 12)\n\ntop_words\n\n\n# A tibble: 12 × 2\n   word       n\n   &lt;chr&gt;  &lt;int&gt;\n 1 like     114\n 2 how      105\n 3 little    91\n 4 day       82\n 5 too       68\n 6 know      64\n 7 some      64\n 8 away      63\n 9 till      57\n10 such      56\n11 never     55\n12 life      54\n\n\n\n\nCode\ntop_words |&gt;\n  mutate(word = fct_reorder(word, n)) |&gt;\n  ggplot(aes(x = n, y = word)) +\n  geom_col(fill = \"steelblue\") +\n  labs(\n    title = \"Dickinson's 12 Most Frequent Words\",\n    subtitle = \"Very common words removed\",\n    x = \"Number of times used\",\n    y = \"Word\"\n  )"
+  },
+  {
+    "objectID": "textanalysis.html#question-2-how-does-her-use-of-dashes-compare-across-file-groups",
+    "href": "textanalysis.html#question-2-how-does-her-use-of-dashes-compare-across-file-groups",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "Question 2: How does her use of dashes compare across file groups?",
+    "text": "Question 2: How does her use of dashes compare across file groups?\n\n\nCode\ndash_by_group &lt;- poems |&gt;\n  group_by(group) |&gt;\n  summarise(\n    poems = n(),\n    avg_dashes = mean(n_dashes)\n  ) |&gt;\n  mutate(group = fct_reorder(group, avg_dashes))\n\ndash_by_group\n\n\n# A tibble: 3 × 3\n  group        poems avg_dashes\n  &lt;fct&gt;        &lt;int&gt;      &lt;dbl&gt;\n1 File group 1    25      0.52 \n2 File group 2    18      0.722\n3 File group 3   395      0.828\n\n\n\n\nCode\nggplot(dash_by_group, aes(x = group, y = avg_dashes)) +\n  geom_col(fill = \"darkorange\") +\n  labs(\n    title = \"Average Number of Dashes per Poem\",\n    subtitle = \"Compared across the three file groups\",\n    x = \"File group\",\n    y = \"Average dashes per poem\"\n  )"
+  },
+  {
+    "objectID": "textanalysis.html#bonus-table-words-right-before-a-dash",
+    "href": "textanalysis.html#bonus-table-words-right-before-a-dash",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "Bonus table: words right before a dash",
+    "text": "Bonus table: words right before a dash\nA lookahead lets me grab the word before a -- without including the dash itself.\n\n\nCode\npre_dash &lt;- tibble(\n  word = unlist(str_extract_all(str_to_lower(poems$text), \"[a-z']+(?=\\\\s*--)\"))\n) |&gt;\n  count(word, sort = TRUE) |&gt;\n  slice_head(n = 8)\n\npre_dash\n\n\n# A tibble: 8 × 2\n  word           n\n  &lt;chr&gt;      &lt;int&gt;\n1 me             3\n2 him            2\n3 us             2\n4 '              1\n5 afternoon      1\n6 afterwards     1\n7 air            1\n8 all            1"
+  },
+  {
+    "objectID": "textanalysis.html#conclusion",
+    "href": "textanalysis.html#conclusion",
+    "title": "Project 2: Emily Dickinson’s Poems",
+    "section": "Conclusion",
+    "text": "Conclusion\nDickinson returns to a small set of words again and again, and the dash is a regular part of her style. A limitation is that my stop-word list is short and was written by hand, so a few very common words may still appear in the results."
   }
 ]

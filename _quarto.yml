@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Project-1"
+  title: "Chelsea's Website"
   navbar:
     left:
       - href: about.qmd
@@ -14,6 +14,10 @@ website:
             href: tidytuesday1.qmd
           - text: "Palmer Penguins"
             href: tidytuesday2.qmd
+          - text: "Text Analysis"
+            href: textanalysis.qmd
+            
+
 
 format:
   html:

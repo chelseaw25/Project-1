@@ -1,0 +1,164 @@
+---
+title: "Emily Dickinson's Poems"
+author: Chelsea Williams
+date: October 12th, 2026
+format:
+  html:
+    code-fold: true
+execute:
+  warning: false
+  message: false
+---
+---
+title: "Project 2: Emily Dickinson's Poems"
+author: "Your Name"
+date: today
+format:
+  html:
+    code-fold: true
+execute:
+  warning: false
+  message: false
+---
+
+## Introduction
+
+Emily Dickinson is known for short poems about big subjects and for her heavy use of
+the dash (`--`). In this project I use string functions and regular expressions to ask:
+
+1. Which words does she use most?
+2. How does her use of dashes compare across the three groups of poem files in the data?
+
+## Data source
+
+* **R package:** `DickinsonPoems` by Nicholas Horton, available at
+  <https://github.com/Amherst-Statistics/DickinsonPoems> and installed with
+  `devtools::install_github("Amherst-Statistics/DickinsonPoems")`.
+* **Original source:** the Project Gutenberg edition of Emily Dickinson's poems,
+  <https://www.gutenberg.org/files/12242/12242-h/12242-h.htm>.
+* Each poem is stored as its own text file (like `gutenberg1.txt001`). I call the
+  digit after "gutenberg" the "file group" (1, 2, or 3).
+
+## Read in the data
+
+```{r}
+library(tidyverse)
+library(DickinsonPoems)
+
+poems_raw <- tibble(file = list_poems()) |>
+  mutate(raw = map_chr(file, \(f) str_flatten(get_poem(f), collapse = "\n")))
+```
+
+## Clean the data
+
+Each poem starts with a Roman numeral like `XIX.`, then usually an ALL-CAPS title, then
+the poem itself. I use regular expressions to pull these pieces apart.
+
+* `(?<=gutenberg)\\d` is a **lookbehind**: it grabs the digit that comes right after
+  the word "gutenberg" in the file name.
+* `[IVXLC]+(?=\\.)` is a **lookahead**: it grabs the Roman numeral only if a period
+  follows it.
+* `[^a-z\\n]*[A-Z][^a-z\\n]*` matches a line with no lowercase letters (the title).
+
+```{r}
+poems <- poems_raw |>
+  mutate(
+    raw = str_trim(raw),
+    group = str_extract(file, "(?<=gutenberg)\\d"),
+    group = str_c("File group ", group),
+    roman = str_extract(raw, "^[IVXLC]+(?=\\.)"),
+    body = str_trim(str_remove(raw, "^[IVXLC]+\\.")),
+    title = str_extract(body, "^[^a-z\\n]*[A-Z][^a-z\\n]*(?=\\n)"),
+    text = str_trim(str_remove(body, "^[^a-z\\n]*[A-Z][^a-z\\n]*\\n")),
+    n_dashes = str_count(text, "--")
+  ) |>
+  select(file, group, roman, title, text, n_dashes)
+
+head(poems)
+```
+
+
+## Question 1: Which words does she use most?
+
+I pull out every word with the regular expression `[a-z']+` (letters and apostrophes),
+then remove a short list of very common words so that the interesting words stand out.
+
+```{r}
+stop_words_small <- c("the", "and", "that", "with", "for", "was", "are", "but",
+                      "not", "you", "all", "his", "her", "they", "this", "have",
+                      "from", "will", "has", "had", "its", "were", "who", "when",
+                      "then", "than", "there", "their", "she", "him", "our", "can",
+                      "one", "would", "could", "what", "which", "upon", "thy",
+                      "thee", "thou", "been", "into", "more", "does", "just")
+
+all_words <- tibble(
+  word = unlist(str_extract_all(str_to_lower(poems$text), "[a-z']+"))
+)
+
+top_words <- all_words |>
+  filter(str_length(word) > 2, !word %in% stop_words_small) |>
+  count(word, sort = TRUE) |>
+  slice_head(n = 12)
+
+top_words
+```
+
+```{r}
+top_words |>
+  mutate(word = fct_reorder(word, n)) |>
+  ggplot(aes(x = n, y = word)) +
+  geom_col(fill = "steelblue") +
+  labs(
+    title = "Dickinson's 12 Most Frequent Words",
+    subtitle = "Very common words removed",
+    x = "Number of times used",
+    y = "Word"
+  )
+```
+
+
+## Question 2: How does her use of dashes compare across file groups?
+
+```{r}
+dash_by_group <- poems |>
+  group_by(group) |>
+  summarise(
+    poems = n(),
+    avg_dashes = mean(n_dashes)
+  ) |>
+  mutate(group = fct_reorder(group, avg_dashes))
+
+dash_by_group
+```
+
+```{r}
+ggplot(dash_by_group, aes(x = group, y = avg_dashes)) +
+  geom_col(fill = "darkorange") +
+  labs(
+    title = "Average Number of Dashes per Poem",
+    subtitle = "Compared across the three file groups",
+    x = "File group",
+    y = "Average dashes per poem"
+  )
+```
+
+## Bonus table: words right before a dash
+
+A **lookahead** lets me grab the word before a `--` without including the dash itself.
+
+```{r}
+pre_dash <- tibble(
+  word = unlist(str_extract_all(str_to_lower(poems$text), "[a-z']+(?=\\s*--)"))
+) |>
+  count(word, sort = TRUE) |>
+  slice_head(n = 8)
+
+pre_dash
+```
+
+
+## Conclusion
+
+Dickinson returns to a small set of words again and again, and the dash is a regular
+part of her style. A limitation is that my stop-word list is short and was written by
+hand, so a few very common words may still appear in the results.
