@@ -1,7 +1,7 @@
 ---
 title: "Emily Dickinson's Poems"
 author: Chelsea Williams
-date: October 12th, 2026
+date: October 14th, 2026
 format:
   html:
     code-fold: true
@@ -20,10 +20,10 @@ I used string functions and regular expressions to ask:
 
 ## Data source
 
-* **R package:** `DickinsonPoems` by Nicholas Horton, available at
+R package: `DickinsonPoems` by Nicholas Horton, available at
   <https://github.com/Amherst-Statistics/DickinsonPoems> and installed with
   `devtools::install_github("Amherst-Statistics/DickinsonPoems")`.
-* **Original source:** the Project Gutenberg edition of Emily Dickinson's poems,
+Original source: the Project Gutenberg edition of Emily Dickinson's poems,
   <https://www.gutenberg.org/files/12242/12242-h/12242-h.htm>.
 * Each poem is stored as its own text file (like `gutenberg1.txt001`). I call the digit
   after "gutenberg" the "file group" (1, 2, or 3).
@@ -50,7 +50,7 @@ head(poems)
 ## Question 1: Which themes show up most?
 
 For each theme I wrote a regular expression of related words. `(?i)` makes it ignore
-capital letters, and `\\b` marks a word boundary so that "die" does not match inside a
+capital letters, and `\\b` marks a word boundary so that "die" can't inside a
 longer word. `str_detect()` checks whether each poem contains a match, and the average
 of those TRUE/FALSE values is the share of poems with that theme.
 

@@ -172,9 +172,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#data-source" id="toc-data-source" class="nav-link" data-scroll-target="#data-source">Data source</a></li>
-  <li><a href="#read-in-the-data" id="toc-read-in-the-data" class="nav-link" data-scroll-target="#read-in-the-data">Read in the data</a></li>
+  <li><a href="#reading-in-the-data" id="toc-reading-in-the-data" class="nav-link" data-scroll-target="#reading-in-the-data">Reading in the data</a></li>
   <li><a href="#question-1-which-themes-show-up-most" id="toc-question-1-which-themes-show-up-most" class="nav-link" data-scroll-target="#question-1-which-themes-show-up-most">Question 1: Which themes show up most?</a></li>
-  <li><a href="#question-2-does-her-use-of-dashes-differ-across-file-groups" id="toc-question-2-does-her-use-of-dashes-differ-across-file-groups" class="nav-link" data-scroll-target="#question-2-does-her-use-of-dashes-differ-across-file-groups">Question 2: Does her use of dashes differ across file groups?</a></li>
+  <li><a href="#question-2-does-the-dashes-differ-across-file-groups" id="toc-question-2-does-the-dashes-differ-across-file-groups" class="nav-link" data-scroll-target="#question-2-does-the-dashes-differ-across-file-groups">Question 2: Does the dashes differ across file groups?</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
@@ -215,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Emily Dickinson wrote short poems about big subjects and used a lot of dashes (<code>--</code>). I used string functions and regular expressions to ask:</p>
+<p>Emily Dickinson wrote short poems about broad subjects and used dashes frequently (<code>--</code>). I used string functions and regular expressions to ask:</p>
 <ol type="1">
 <li>Which themes (death, love, nature, God) show up most often in her poems?</li>
 <li>Does her use of dashes differ across the three groups of poem files in the data?</li>
@@ -223,14 +223,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="data-source" class="level2">
 <h2 class="anchored" data-anchor-id="data-source">Data source</h2>
-<ul>
-<li><strong>R package:</strong> <code>DickinsonPoems</code> by Nicholas Horton, available at <a href="https://github.com/Amherst-Statistics/DickinsonPoems" class="uri">https://github.com/Amherst-Statistics/DickinsonPoems</a> and installed with <code>devtools::install_github("Amherst-Statistics/DickinsonPoems")</code>.</li>
-<li><strong>Original source:</strong> the Project Gutenberg edition of Emily Dickinson’s poems, <a href="https://www.gutenberg.org/files/12242/12242-h/12242-h.htm" class="uri">https://www.gutenberg.org/files/12242/12242-h/12242-h.htm</a>.</li>
-<li>Each poem is stored as its own text file (like <code>gutenberg1.txt001</code>). I call the digit after “gutenberg” the “file group” (1, 2, or 3).</li>
-</ul>
+<p>R package: <code>DickinsonPoems</code> by Nicholas Horton, available at <a href="https://github.com/Amherst-Statistics/DickinsonPoems" class="uri">https://github.com/Amherst-Statistics/DickinsonPoems</a> and installed with <code>devtools::install_github("Amherst-Statistics/DickinsonPoems")</code>. Original source: the Project Gutenberg edition of Emily Dickinson’s poems, <a href="https://www.gutenberg.org/files/12242/12242-h/12242-h.htm" class="uri">https://www.gutenberg.org/files/12242/12242-h/12242-h.htm</a>. * Each poem is stored as its own text file (like <code>gutenberg1.txt001</code>). I call the digit after “gutenberg” the “file group” (1, 2, or 3).</p>
 </section>
-<section id="read-in-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="read-in-the-data">Read in the data</h2>
+<section id="reading-in-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="reading-in-the-data">Reading in the data</h2>
 <p>The regular expression <code>(?&lt;=gutenberg)\\d</code> uses a <strong>lookbehind</strong> to grab the digit that comes right after “gutenberg” in the file name.</p>
 <div class="cell">
 <details class="code-fold">
@@ -262,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="question-1-which-themes-show-up-most" class="level2">
 <h2 class="anchored" data-anchor-id="question-1-which-themes-show-up-most">Question 1: Which themes show up most?</h2>
-<p>For each theme I wrote a regular expression of related words. <code>(?i)</code> makes it ignore capital letters, and <code>\\b</code> marks a word boundary so that “die” does not match inside a longer word. <code>str_detect()</code> checks whether each poem contains a match, and the average of those TRUE/FALSE values is the share of poems with that theme.</p>
+<p>For each theme I wrote a regular expression of related words. <code>(?i)</code> makes it ignore capital letters, and <code>\\b</code> marks a word boundary so that “die” can’t inside a longer word. <code>str_detect()</code> checks whether each poem contains a match, and the average of those TRUE/FALSE values is the share of poems with that theme.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -311,8 +307,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>What the plot shows.</strong> Each bar is the percent of poems that contain at least one word from that theme, with the most common theme at the top. The most common theme is <strong>Nature</strong>, which appears in 31% of the poems. The least common is <strong>Love</strong>, at 7%. This is a rough measure, because a poem can use the word “grave” without being mainly about death.</p>
 </section>
-<section id="question-2-does-her-use-of-dashes-differ-across-file-groups" class="level2">
-<h2 class="anchored" data-anchor-id="question-2-does-her-use-of-dashes-differ-across-file-groups">Question 2: Does her use of dashes differ across file groups?</h2>
+<section id="question-2-does-the-dashes-differ-across-file-groups" class="level2">
+<h2 class="anchored" data-anchor-id="question-2-does-the-dashes-differ-across-file-groups">Question 2: Does the dashes differ across file groups?</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>

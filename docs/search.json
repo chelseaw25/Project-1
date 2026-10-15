@@ -95,21 +95,21 @@
     "href": "textanalysis.html",
     "title": "Emily Dickinson’s Poems",
     "section": "",
-    "text": "Emily Dickinson wrote short poems about big subjects and used a lot of dashes (--). I used string functions and regular expressions to ask:\n\nWhich themes (death, love, nature, God) show up most often in her poems?\nDoes her use of dashes differ across the three groups of poem files in the data?"
+    "text": "Emily Dickinson wrote short poems about broad subjects and used dashes frequently (--). I used string functions and regular expressions to ask:\n\nWhich themes (death, love, nature, God) show up most often in her poems?\nDoes her use of dashes differ across the three groups of poem files in the data?"
   },
   {
     "objectID": "textanalysis.html#introduction",
     "href": "textanalysis.html#introduction",
     "title": "Emily Dickinson’s Poems",
     "section": "",
-    "text": "Emily Dickinson wrote short poems about big subjects and used a lot of dashes (--). I used string functions and regular expressions to ask:\n\nWhich themes (death, love, nature, God) show up most often in her poems?\nDoes her use of dashes differ across the three groups of poem files in the data?"
+    "text": "Emily Dickinson wrote short poems about broad subjects and used dashes frequently (--). I used string functions and regular expressions to ask:\n\nWhich themes (death, love, nature, God) show up most often in her poems?\nDoes her use of dashes differ across the three groups of poem files in the data?"
   },
   {
     "objectID": "textanalysis.html#data-source",
     "href": "textanalysis.html#data-source",
     "title": "Emily Dickinson’s Poems",
     "section": "Data source",
-    "text": "Data source\n\nR package: DickinsonPoems by Nicholas Horton, available at https://github.com/Amherst-Statistics/DickinsonPoems and installed with devtools::install_github(\"Amherst-Statistics/DickinsonPoems\").\nOriginal source: the Project Gutenberg edition of Emily Dickinson’s poems, https://www.gutenberg.org/files/12242/12242-h/12242-h.htm.\nEach poem is stored as its own text file (like gutenberg1.txt001). I call the digit after “gutenberg” the “file group” (1, 2, or 3)."
+    "text": "Data source\nR package: DickinsonPoems by Nicholas Horton, available at https://github.com/Amherst-Statistics/DickinsonPoems and installed with devtools::install_github(\"Amherst-Statistics/DickinsonPoems\"). Original source: the Project Gutenberg edition of Emily Dickinson’s poems, https://www.gutenberg.org/files/12242/12242-h/12242-h.htm. * Each poem is stored as its own text file (like gutenberg1.txt001). I call the digit after “gutenberg” the “file group” (1, 2, or 3)."
   },
   {
     "objectID": "textanalysis.html#read-in-the-data",
@@ -158,7 +158,7 @@
     "href": "textanalysis.html#question-1-which-themes-show-up-most",
     "title": "Emily Dickinson’s Poems",
     "section": "Question 1: Which themes show up most?",
-    "text": "Question 1: Which themes show up most?\nFor each theme I wrote a regular expression of related words. (?i) makes it ignore capital letters, and \\\\b marks a word boundary so that “die” does not match inside a longer word. str_detect() checks whether each poem contains a match, and the average of those TRUE/FALSE values is the share of poems with that theme.\n\n\nCode\nthemes &lt;- poems |&gt;\n  summarise(\n    Death = mean(str_detect(text, \"(?i)\\\\b(death|die|dies|died|dying|dead|grave)\\\\b\")),\n    Love = mean(str_detect(text, \"(?i)\\\\b(love|loved|loves|lover)\\\\b\")),\n    Nature = mean(str_detect(text, \"(?i)\\\\b(bee|bees|bird|birds|flower|flowers|sun|snow|wind)\\\\b\")),\n    God = mean(str_detect(text, \"(?i)\\\\b(god|heaven|angel|angels|eternity)\\\\b\"))\n  ) |&gt;\n  pivot_longer(everything(), names_to = \"theme\", values_to = \"share\") |&gt;\n  mutate(theme = fct_reorder(theme, share))\n\nthemes\n\n\n# A tibble: 4 × 2\n  theme   share\n  &lt;fct&gt;   &lt;dbl&gt;\n1 Death  0.215 \n2 Love   0.0662\n3 Nature 0.308 \n4 God    0.194 \n\n\n\n\nCode\nggplot(themes, aes(x = share, y = theme)) +\n  geom_col(fill = \"steelblue\") +\n  scale_x_continuous(labels = scales::percent) +\n  labs(\n    title = \"Share of Poems Mentioning Each Theme\",\n    subtitle = \"Based on keyword matches\",\n    x = \"Percent of poems with at least one matching word\",\n    y = \"Theme\"\n  )\n\n\n\n\n\n\n\n\n\nWhat the plot shows. Each bar is the percent of poems that contain at least one word from that theme, with the most common theme at the top. The most common theme is Nature, which appears in 31% of the poems. The least common is Love, at 7%. This is a rough measure, because a poem can use the word “grave” without being mainly about death."
+    "text": "Question 1: Which themes show up most?\nFor each theme I wrote a regular expression of related words. (?i) makes it ignore capital letters, and \\\\b marks a word boundary so that “die” can’t inside a longer word. str_detect() checks whether each poem contains a match, and the average of those TRUE/FALSE values is the share of poems with that theme.\n\n\nCode\nthemes &lt;- poems |&gt;\n  summarise(\n    Death = mean(str_detect(text, \"(?i)\\\\b(death|die|dies|died|dying|dead|grave)\\\\b\")),\n    Love = mean(str_detect(text, \"(?i)\\\\b(love|loved|loves|lover)\\\\b\")),\n    Nature = mean(str_detect(text, \"(?i)\\\\b(bee|bees|bird|birds|flower|flowers|sun|snow|wind)\\\\b\")),\n    God = mean(str_detect(text, \"(?i)\\\\b(god|heaven|angel|angels|eternity)\\\\b\"))\n  ) |&gt;\n  pivot_longer(everything(), names_to = \"theme\", values_to = \"share\") |&gt;\n  mutate(theme = fct_reorder(theme, share))\n\nthemes\n\n\n# A tibble: 4 × 2\n  theme   share\n  &lt;fct&gt;   &lt;dbl&gt;\n1 Death  0.215 \n2 Love   0.0662\n3 Nature 0.308 \n4 God    0.194 \n\n\n\n\nCode\nggplot(themes, aes(x = share, y = theme)) +\n  geom_col(fill = \"steelblue\") +\n  scale_x_continuous(labels = scales::percent) +\n  labs(\n    title = \"Share of Poems Mentioning Each Theme\",\n    subtitle = \"Based on keyword matches\",\n    x = \"Percent of poems with at least one matching word\",\n    y = \"Theme\"\n  )\n\n\n\n\n\n\n\n\n\nWhat the plot shows. Each bar is the percent of poems that contain at least one word from that theme, with the most common theme at the top. The most common theme is Nature, which appears in 31% of the poems. The least common is Love, at 7%. This is a rough measure, because a poem can use the word “grave” without being mainly about death."
   },
   {
     "objectID": "textanalysis.html#question-2-does-her-use-of-dashes-differ-across-file-groups",
@@ -166,5 +166,19 @@
     "title": "Emily Dickinson’s Poems",
     "section": "Question 2: Does her use of dashes differ across file groups?",
     "text": "Question 2: Does her use of dashes differ across file groups?\n\n\nCode\ndash_by_group &lt;- poems |&gt;\n  group_by(group) |&gt;\n  summarise(avg_dashes = mean(n_dashes)) |&gt;\n  mutate(group = fct_reorder(group, avg_dashes))\n\ndash_by_group\n\n\n# A tibble: 3 × 2\n  group        avg_dashes\n  &lt;fct&gt;             &lt;dbl&gt;\n1 File group 1      0.52 \n2 File group 2      0.722\n3 File group 3      0.828\n\n\n\n\nCode\nggplot(dash_by_group, aes(x = group, y = avg_dashes)) +\n  geom_col(fill = \"darkorange\") +\n  labs(\n    title = \"Average Number of Dashes per Poem\",\n    subtitle = \"Compared across the three file groups\",\n    x = \"File group\",\n    y = \"Average dashes per poem\"\n  )\n\n\n\n\n\n\n\n\n\nWhat the plot shows. Each bar is the average number of dashes (--) per poem in one file group, ordered from lowest to highest. The group with the most dashes is File group 3, at about 0.8 per poem. The group with the fewest is File group 1, at about 0.5. If the bars are close, the dash is a steady habit across her poems, and if they differ a lot, the groups are quite different in style."
+  },
+  {
+    "objectID": "textanalysis.html#reading-in-the-data",
+    "href": "textanalysis.html#reading-in-the-data",
+    "title": "Emily Dickinson’s Poems",
+    "section": "Reading in the data",
+    "text": "Reading in the data\nThe regular expression (?&lt;=gutenberg)\\\\d uses a lookbehind to grab the digit that comes right after “gutenberg” in the file name.\n\n\nCode\nlibrary(tidyverse)\nlibrary(DickinsonPoems)\n\npoems &lt;- tibble(file = list_poems()) |&gt;\n  mutate(\n    text = map_chr(file, \\(f) str_flatten(get_poem(f), collapse = \"\\n\")),\n    group = str_c(\"File group \", str_extract(file, \"(?&lt;=gutenberg)\\\\d\")),\n    n_dashes = str_count(text, \"--\")\n  )\n\nhead(poems)\n\n\n# A tibble: 6 × 4\n  file              text                                          group n_dashes\n  &lt;chr&gt;             &lt;chr&gt;                                         &lt;chr&gt;    &lt;int&gt;\n1 gutenberg1.txt001 \"I. \\n \\nSUCCESS. \\n \\n[Published in \\\"A Mas… File…        0\n2 gutenberg1.txt002 \"II. \\n \\nOur share of night to bear, \\nOur … File…        1\n3 gutenberg1.txt003 \"III. \\n \\nROUGE ET NOIR. \\n \\nSoul, wilt th… File…        0\n4 gutenberg1.txt004 \"IV. \\n \\nROUGE GAGNE. \\n \\n'T is so much jo… File…        1\n5 gutenberg1.txt005 \"V. \\n \\nGlee! The great storm is over! \\nFo… File…        1\n6 gutenberg1.txt006 \"VI. \\n \\nIf I can stop one heart from break… File…        0"
+  },
+  {
+    "objectID": "textanalysis.html#question-2-does-the-dashes-differ-across-file-groups",
+    "href": "textanalysis.html#question-2-does-the-dashes-differ-across-file-groups",
+    "title": "Emily Dickinson’s Poems",
+    "section": "Question 2: Does the dashes differ across file groups?",
+    "text": "Question 2: Does the dashes differ across file groups?\n\n\nCode\ndash_by_group &lt;- poems |&gt;\n  group_by(group) |&gt;\n  summarise(avg_dashes = mean(n_dashes)) |&gt;\n  mutate(group = fct_reorder(group, avg_dashes))\n\ndash_by_group\n\n\n# A tibble: 3 × 2\n  group        avg_dashes\n  &lt;fct&gt;             &lt;dbl&gt;\n1 File group 1      0.52 \n2 File group 2      0.722\n3 File group 3      0.828\n\n\n\n\nCode\nggplot(dash_by_group, aes(x = group, y = avg_dashes)) +\n  geom_col(fill = \"darkorange\") +\n  labs(\n    title = \"Average Number of Dashes per Poem\",\n    subtitle = \"Compared across the three file groups\",\n    x = \"File group\",\n    y = \"Average dashes per poem\"\n  )\n\n\n\n\n\n\n\n\n\nWhat the plot shows. Each bar is the average number of dashes (--) per poem in one file group, ordered from lowest to highest. The group with the most dashes is File group 3, at about 0.8 per poem. The group with the fewest is File group 1, at about 0.5. If the bars are close, the dash is a steady habit across her poems, and if they differ a lot, the groups are quite different in style."
   }
 ]
