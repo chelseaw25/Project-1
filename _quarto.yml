@@ -6,8 +6,6 @@ website:
   title: "Chelsea's Website"
   navbar:
     left:
-      - href: about.qmd
-        text: About
       - text: Data Viz
         menu:
           - text: "Palm Trees"

@@ -86,9 +86,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Project-1",
+    "title": "Chelsea",
     "section": "",
-    "text": "First Mini Project for Foundations of Data Science in R.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Hi, I’m Chelsea! I’m a sophomore at Pomona College majoring in economics and thinking about adding a minor in data science. I live in New Jersey pretty close to Rutgers University!"
   },
   {
     "objectID": "textanalysis.html",
@@ -180,5 +180,26 @@
     "title": "Emily Dickinson’s Poems",
     "section": "Question 2: Does the dashes differ across file groups?",
     "text": "Question 2: Does the dashes differ across file groups?\n\n\nCode\ndash_by_group &lt;- poems |&gt;\n  group_by(group) |&gt;\n  summarise(avg_dashes = mean(n_dashes)) |&gt;\n  mutate(group = fct_reorder(group, avg_dashes))\n\ndash_by_group\n\n\n# A tibble: 3 × 2\n  group        avg_dashes\n  &lt;fct&gt;             &lt;dbl&gt;\n1 File group 1      0.52 \n2 File group 2      0.722\n3 File group 3      0.828\n\n\n\n\nCode\nggplot(dash_by_group, aes(x = group, y = avg_dashes)) +\n  geom_col(fill = \"darkorange\") +\n  labs(\n    title = \"Average Number of Dashes per Poem\",\n    subtitle = \"Compared across the three file groups\",\n    x = \"File group\",\n    y = \"Average dashes per poem\"\n  )\n\n\n\n\n\n\n\n\n\nWhat the plot shows. Each bar is the average number of dashes (--) per poem in one file group, ordered from lowest to highest. The group with the most dashes is File group 3, at about 0.8 per poem. The group with the fewest is File group 1, at about 0.5. If the bars are close, the dash is a steady habit across her poems, and if they differ a lot, the groups are quite different in style."
+  },
+  {
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "Chelsea",
+    "section": "",
+    "text": "Hi, I’m Chelsea! I’m a sophomore at Pomona College majoring in economics and thinking about adding a minor in data science. I live in New Jersey pretty close to Rutgers University!"
+  },
+  {
+    "objectID": "index.html#interests",
+    "href": "index.html#interests",
+    "title": "Chelsea",
+    "section": "Interests",
+    "text": "Interests\nOutside of academics, I love to go thrifting with my friends and listen to music!."
+  },
+  {
+    "objectID": "index.html#code",
+    "href": "index.html#code",
+    "title": "Chelsea",
+    "section": "Code",
+    "text": "Code\nThe code for this website is available on GitHub."
   }
 ]
