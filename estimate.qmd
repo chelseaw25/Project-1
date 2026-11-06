@@ -1,5 +1,5 @@
 ---
-title: "Project 3: The Birthday Problem with Real Birth Data"
+title: "Project 3: The Birthday Problem"
 author: "Chelsea Williams"
 date: November 5th, 2026
 format:
