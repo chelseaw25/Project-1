@@ -13,7 +13,7 @@ execute:
 
 ## Plan
 
-In this project I estimate the probability that at least two people in a group share a birthday. The textbook version assumes all days of the year are equally likely, but real births are not spread evenly. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the "real birthdays" results to the "all days equally likely" results to see if the unevenness matters.
+In this project I estimate the probability that at least two people in a group share a birthday. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the "real birthdays" results to the "all days equally likely" results to see if the unevenness matters.
 
 ## Data Source
 
@@ -114,8 +114,8 @@ min_uniform <- sim_results |> filter(uniform >= 0.5) |> summarize(min(n)) |> pul
 
 ## What the Plot Shows
 
-The horizontal axis is group size and the vertical axis is the estimated probability that at least one pair shares a birthday. Both curves start near zero for tiny groups, rise steeply, and level off near 1 for groups of around 50 or more. The dashed line marks 50%. With real birth data, the probability first reaches 50% at a group size of **`r min_real`** people, compared to **`r min_uniform`** when all days are equally likely. The two curves are very close, with the real-data curve sitting at or slightly above the equal-days curve, because uneven birthdays make matches a bit more likely. Each estimate comes from 5,000 simulated groups, so small bumps in the lines are simulation noise.
+The horizontal axis is group size and the vertical axis is the estimated probability that at least one pair shares a birthday. Both curves start near zero for tiny groups, rise at a steep slope, and level off near 1 for groups of around 50 or more. The dashed line marks 50%. With real birth data, the probability first reaches 50% at a group size of **`r min_real`** people, compared to **`r min_uniform`** when all days are equally likely. The two curves are very close, with the real-data curve sitting at or slightly above the equal-days curve, because uneven birthdays make matches a bit more likely. Each estimate comes from 5,000 simulated groups, so small bumps in the lines are simulation noise.
 
 ## Conclusion
 
-I simulated thousands of groups of people using birthday probabilities estimated from U.S. births in 2000-2014 and compared them to the textbook equal-days assumption. The simulation shows that you need only about `r min_real` people for a 50% chance of a shared birthday, and that the unevenness of real birthdays changes the answer very little. These results apply to groups of people whose birthdays are drawn at random from the U.S. population of births in this period, so they may not apply to groups that are not random with respect to birthday, such as a team whose members were chosen by birth date. Rerunning with more repetitions would make the curves smoother.
+I simulated thousands of groups of people using birthday probabilities estimated from U.S. births in 2000-2014 and compared them to the equal-days assumption. The simulation shows that you need only about `r min_real` people for a 50% chance of a shared birthday, and that the unevenness of real birthdays changes the answer very little. These results apply to groups of people whose birthdays are drawn at random from the U.S. population of births in this period, so they may not apply to groups that are not random with respect to birthday, such as a team whose members were chosen by birth date. Rerunning with more repetitions would make the curves smoother.

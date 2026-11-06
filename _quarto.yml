@@ -14,9 +14,10 @@ website:
             href: tidytuesday2.qmd
           - text: "Text Analysis"
             href: textanalysis.qmd
-          - text: "Hypothesis"
-            href: hypothesis.qmd
+          - text: "Estimate"
+            href: estimate.qmd
             
+
 
 
 format:

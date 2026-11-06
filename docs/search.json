@@ -207,14 +207,14 @@
     "href": "hypothesis.html",
     "title": "Project 3: The Birthday Problem with Real Birth Data",
     "section": "",
-    "text": "In this project I estimate the probability that at least two people in a group share a birthday. The textbook version assumes all days of the year are equally likely, but real births are not spread evenly. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the “real birthdays” results to the “all days equally likely” results to see if the unevenness matters."
+    "text": "In this project I estimate the probability that at least two people in a group share a birthday. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the “real birthdays” results to the “all days equally likely” results to see if the unevenness matters."
   },
   {
     "objectID": "hypothesis.html#plan",
     "href": "hypothesis.html#plan",
     "title": "Project 3: The Birthday Problem with Real Birth Data",
     "section": "",
-    "text": "In this project I estimate the probability that at least two people in a group share a birthday. The textbook version assumes all days of the year are equally likely, but real births are not spread evenly. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the “real birthdays” results to the “all days equally likely” results to see if the unevenness matters."
+    "text": "In this project I estimate the probability that at least two people in a group share a birthday. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the “real birthdays” results to the “all days equally likely” results to see if the unevenness matters."
   },
   {
     "objectID": "hypothesis.html#data-source",
@@ -242,13 +242,13 @@
     "href": "hypothesis.html#what-the-plot-shows",
     "title": "Project 3: The Birthday Problem with Real Birth Data",
     "section": "What the Plot Shows",
-    "text": "What the Plot Shows\nThe horizontal axis is group size and the vertical axis is the estimated probability that at least one pair shares a birthday. Both curves start near zero for tiny groups, rise steeply, and level off near 1 for groups of around 50 or more. The dashed line marks 50%. With real birth data, the probability first reaches 50% at a group size of 23 people, compared to 24 when all days are equally likely. The two curves are very close, with the real-data curve sitting at or slightly above the equal-days curve, because uneven birthdays make matches a bit more likely. Each estimate comes from 5,000 simulated groups, so small bumps in the lines are simulation noise."
+    "text": "What the Plot Shows\nThe horizontal axis is group size and the vertical axis is the estimated probability that at least one pair shares a birthday. Both curves start near zero for tiny groups, rise at a steep slope, and level off near 1 for groups of around 50 or more. The dashed line marks 50%. With real birth data, the probability first reaches 50% at a group size of 23 people, compared to 24 when all days are equally likely. The two curves are very close, with the real-data curve sitting at or slightly above the equal-days curve, because uneven birthdays make matches a bit more likely. Each estimate comes from 5,000 simulated groups, so small bumps in the lines are simulation noise."
   },
   {
     "objectID": "hypothesis.html#conclusion",
     "href": "hypothesis.html#conclusion",
     "title": "Project 3: The Birthday Problem with Real Birth Data",
     "section": "Conclusion",
-    "text": "Conclusion\nI simulated thousands of groups of people using birthday probabilities estimated from U.S. births in 2000-2014 and compared them to the textbook equal-days assumption. The simulation shows that you need only about 23 people for a 50% chance of a shared birthday, and that the unevenness of real birthdays changes the answer very little. These results apply to groups of people whose birthdays are drawn at random from the U.S. population of births in this period, so they may not apply to groups that are not random with respect to birthday, such as a team whose members were chosen by birth date. Rerunning with more repetitions would make the curves smoother."
+    "text": "Conclusion\nI simulated thousands of groups of people using birthday probabilities estimated from U.S. births in 2000-2014 and compared them to the equal-days assumption. The simulation shows that you need only about 23 people for a 50% chance of a shared birthday, and that the unevenness of real birthdays changes the answer very little. These results apply to groups of people whose birthdays are drawn at random from the U.S. population of births in this period, so they may not apply to groups that are not random with respect to birthday, such as a team whose members were chosen by birth date. Rerunning with more repetitions would make the curves smoother."
   }
 ]
