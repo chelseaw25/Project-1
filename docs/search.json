@@ -254,49 +254,49 @@
   {
     "objectID": "estimate.html",
     "href": "estimate.html",
-    "title": "Project 3: The Birthday Problem with Real Birth Data",
+    "title": "Project 3: The Birthday Problem",
     "section": "",
     "text": "In this project I estimate the probability that at least two people in a group share a birthday. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the “real birthdays” results to the “all days equally likely” results to see if the unevenness matters."
   },
   {
     "objectID": "estimate.html#plan",
     "href": "estimate.html#plan",
-    "title": "Project 3: The Birthday Problem with Real Birth Data",
+    "title": "Project 3: The Birthday Problem",
     "section": "",
     "text": "In this project I estimate the probability that at least two people in a group share a birthday. I use real U.S. birth data to estimate how likely each calendar day is, then simulate many groups of different sizes. I compare the “real birthdays” results to the “all days equally likely” results to see if the unevenness matters."
   },
   {
     "objectID": "estimate.html#data-source",
     "href": "estimate.html#data-source",
-    "title": "Project 3: The Birthday Problem with Real Birth Data",
+    "title": "Project 3: The Birthday Problem",
     "section": "Data Source",
     "text": "Data Source\nThe data are US_births_2000-2014_SSA.csv from the FiveThirtyEight data repository: https://github.com/fivethirtyeight/data/tree/master/births. The original source of the numbers is the U.S. Social Security Administration, which records the number of births each day from 2000 to 2014. FiveThirtyEight published the data for their article “Some People Are Too Superstitious To Have A Baby On Friday The 13th.”"
   },
   {
     "objectID": "estimate.html#setup-and-data",
     "href": "estimate.html#setup-and-data",
-    "title": "Project 3: The Birthday Problem with Real Birth Data",
+    "title": "Project 3: The Birthday Problem",
     "section": "Setup and Data",
     "text": "Setup and Data\n\n\nCode\nlibrary(tidyverse)\nset.seed(2026)\n\nbirths &lt;- read_csv(\"US_births_2000-2014_SSA.csv\")\n\nglimpse(births)\n\n\nRows: 5,479\nColumns: 5\n$ year          &lt;dbl&gt; 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 20…\n$ month         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ date_of_month &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1…\n$ day_of_week   &lt;dbl&gt; 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3,…\n$ births        &lt;dbl&gt; 9083, 8006, 11363, 13032, 12558, 12466, 12516, 8934, 794…\n\n\nEach row is one calendar day, and births is the number of U.S. births on that day. To get the probability of a random person having each birthday, I add up births across all years for each month and day, then divide by the grand total.\n\n\nCode\nday_probs &lt;- births |&gt;\n  group_by(month, date_of_month) |&gt;\n  summarize(total_births = sum(births), .groups = \"drop\") |&gt;\n  mutate(prob = total_births / sum(total_births))\n\n# \"Nothing special\" comparison: every day equally likely\nuniform_probs &lt;- rep(1 / nrow(day_probs), nrow(day_probs))\n\n\n\nVisualizing the original data\n\n\nCode\nday_probs |&gt;\n  mutate(day_number = row_number()) |&gt;\n  ggplot(aes(x = day_number, y = prob)) +\n  geom_point(alpha = 0.6) +\n  geom_hline(yintercept = 1 / nrow(day_probs), color = \"red\") +\n  labs(\n    title = \"Not All Birthdays Are Equally Likely\",\n    x = \"Day of the year (1 = Jan 1)\",\n    y = \"Probability a random person is born on that day\"\n  )\n\n\n\n\n\n\n\n\n\nEach point is one calendar day. The red line is what we would see if every day were equally likely. Most days sit near the line, but some fall well below it, and a cluster of days sits above it. So the equal-days assumption is not perfectly true, which is why a simulation helps."
   },
   {
     "objectID": "estimate.html#description-of-the-simulation",
     "href": "estimate.html#description-of-the-simulation",
-    "title": "Project 3: The Birthday Problem with Real Birth Data",
+    "title": "Project 3: The Birthday Problem",
     "section": "Description of the Simulation",
     "text": "Description of the Simulation\nI wrote two functions. The first, has_shared_birthday(), builds one random group of n people. It draws a birthday for each person using the given probabilities and returns TRUE if any two people share a day. The second, estimate_prob(), repeats that process many times with map_lgl() and takes the proportion of groups that had a match, which estimates the probability. I then use map_dbl() to run estimate_prob() for every group size from 2 to 60, once with the real birthday probabilities and once with equal probabilities.\n\n\nCode\n# One simulated group: is there at least one shared birthday?\nhas_shared_birthday &lt;- function(n, probs) {\n  days &lt;- sample(seq_along(probs), size = n, replace = TRUE, prob = probs)\n  any(duplicated(days))\n}\n\n# Repeat many times and estimate the probability\nestimate_prob &lt;- function(n, probs, reps = 5000) {\n  results &lt;- map_lgl(1:reps, ~ has_shared_birthday(n, probs))\n  mean(results)\n}\n\nsim_results &lt;- tibble(n = 2:60) |&gt;\n  mutate(\n    real    = map_dbl(n, estimate_prob, probs = day_probs$prob),\n    uniform = map_dbl(n, estimate_prob, probs = uniform_probs)\n  )\n\nhead(sim_results)\n\n\n# A tibble: 6 × 3\n      n   real uniform\n  &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;\n1     2 0.0022  0.0028\n2     3 0.0098  0.009 \n3     4 0.0164  0.0118\n4     5 0.0234  0.0228\n5     6 0.0426  0.038 \n6     7 0.0502  0.057 \n\n\n\n\nCode\nsim_long &lt;- sim_results |&gt;\n  pivot_longer(cols = c(real, uniform),\n               names_to = \"model\",\n               values_to = \"prob\") |&gt;\n  mutate(model = recode(model,\n                        real = \"Real birth data\",\n                        uniform = \"All days equally likely\"))\n\nsim_long |&gt;\n  ggplot(aes(x = n, y = prob, color = model)) +\n  geom_line(linewidth = 1) +\n  geom_hline(yintercept = 0.5, linetype = \"dashed\") +\n  labs(\n    title = \"Probability of a Shared Birthday by Group Size\",\n    x = \"Number of people in the group\",\n    y = \"Estimated probability of at least one shared birthday\",\n    color = \"Birthday assumption\"\n  )\n\n\n\n\n\n\n\n\n\n\n\nCode\nmin_real &lt;- sim_results |&gt; filter(real &gt;= 0.5) |&gt; summarize(min(n)) |&gt; pull()\nmin_uniform &lt;- sim_results |&gt; filter(uniform &gt;= 0.5) |&gt; summarize(min(n)) |&gt; pull()"
   },
   {
     "objectID": "estimate.html#what-the-plot-shows",
     "href": "estimate.html#what-the-plot-shows",
-    "title": "Project 3: The Birthday Problem with Real Birth Data",
+    "title": "Project 3: The Birthday Problem",
     "section": "What the Plot Shows",
     "text": "What the Plot Shows\nThe horizontal axis is group size and the vertical axis is the estimated probability that at least one pair shares a birthday. Both curves start near zero for tiny groups, rise at a steep slope, and level off near 1 for groups of around 50 or more. The dashed line marks 50%. With real birth data, the probability first reaches 50% at a group size of 23 people, compared to 24 when all days are equally likely. The two curves are very close, with the real-data curve sitting at or slightly above the equal-days curve, because uneven birthdays make matches a bit more likely. Each estimate comes from 5,000 simulated groups, so small bumps in the lines are simulation noise."
   },
   {
     "objectID": "estimate.html#conclusion",
     "href": "estimate.html#conclusion",
-    "title": "Project 3: The Birthday Problem with Real Birth Data",
+    "title": "Project 3: The Birthday Problem",
     "section": "Conclusion",
     "text": "Conclusion\nI simulated thousands of groups of people using birthday probabilities estimated from U.S. births in 2000-2014 and compared them to the equal-days assumption. The simulation shows that you need only about 23 people for a 50% chance of a shared birthday, and that the unevenness of real birthdays changes the answer very little. These results apply to groups of people whose birthdays are drawn at random from the U.S. population of births in this period, so they may not apply to groups that are not random with respect to birthday, such as a team whose members were chosen by birth date. Rerunning with more repetitions would make the curves smoother."
   }
